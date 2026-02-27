@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#4361ee">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="E-Commerce Pro">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192">
+    <link rel="manifest" href="data:application/manifest+json,{
+        &quot;name&quot;: &quot;E-Commerce Pro&quot;,
+        &quot;short_name&quot;: &quot;E-Commerce&quot;,
+        &quot;start_url&quot;: &quot;.&quot;,
+        &quot;display&quot;: &quot;standalone&quot;,
+        &quot;background_color&quot;: &quot;#4361ee&quot;,
+        &quot;theme_color&quot;: &quot;#4361ee&quot;,
+        &quot;icons&quot;: [{
+            &quot;src&quot;: &quot;https://via.placeholder.com/192&quot;,
+            &quot;sizes&quot;: &quot;192x192&quot;,
+            &quot;type&quot;: &quot;image/png&quot;
+        }]
+    }">
+    <title>نظام إي كومايرس برو | E-Commerce Pro</title>
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- شاشة البداية -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <i class="fas fa-store"></i>
+            <h1>E-Commerce Pro</h1>
+            <p>نظام إدارة متكامل</p>
+        </div>
+    </div>
+
+    <!-- شاشة تسجيل الدخول -->
+    <div id="loginPage" class="login-container">
+        <div class="language-switch">
+            <button class="lang-btn active" onclick="setLanguage('ar')">العربية</button>
+        </div>
+
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-store"></i>
+                <h2 data-ar="نظام التجارة الإلكترونية" data-en="E-Commerce System">نظام التجارة الإلكترونية</h2>
+                <p data-ar="تسجيل الدخول للوحة التحكم" data-en="Login to Dashboard">تسجيل الدخول للوحة التحكم</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label>
+                    <div class="input-group">
+                        <input type="email" id="email" placeholder="enter email " required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label data-ar="كلمة المرور" data-en="Password">كلمة المرور</label>
+                    <div class="input-group">
+                        <input type="password" id="password" placeholder="enter password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span data-ar="تسجيل الدخول" data-en="Login">تسجيل الدخول</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- لوحة التحكم -->
+    <div id="dashboardPage" class="dashboard-container">
+        <!-- القائمة الجانبية -->
+        <div id="sidebar" class="sidebar">
+            <button class="toggle-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <h2>E-Commerce Pro</h2>
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <h4 id="userName">مدير النظام</h4>
+                    <p id="userRole" data-ar="مدير النظام" data-en="Admin">مدير النظام</p>
+                </div>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="showSection('dashboard')">
+                        <i class="fas fa-chart-pie"></i>
+                        <span data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('products')">
+                        <i class="fas fa-box"></i>
+                        <span data-ar="المنتجات" data-en="Products">المنتجات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('orders')">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span data-ar="الطلبات" data-en="Orders">الطلبات</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('activities')">
+                        <i class="fas fa-history"></i>
+                        <span data-ar="سجل النشاطات" data-en="Activities">سجل النشاطات</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div id="mainContent" class="main-content">
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle" data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</h1>
+                    <p id="pageSubtitle" data-ar="نظرة عامة على النظام" data-en="System Overview">نظرة عامة على النظام
+                    </p>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span data-ar="تسجيل الخروج" data-en="Logout">تسجيل الخروج</span>
+                </button>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboardSection">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3 data-ar="المبيعات الشهرية" data-en="Monthly Sales">المبيعات الشهرية</h3>
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3 data-ar="توزيع المنتجات" data-en="Products Distribution">توزيع المنتجات</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div id="productsSection" style="display: none;">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2><i class="fas fa-box"></i> <span data-ar="إدارة المنتجات"
+                                data-en="Products Management">إدارة المنتجات</span></h2>
+                        <button class="btn-add" onclick="openProductModal()" id="addProductBtn">
+                            <i class="fas fa-plus"></i>
+                            <span data-ar="إضافة منتج" data-en="Add Product">إضافة منتج</span>
+                        </button>
+                    </div>
+                    <table id="productsTable">
+                        <thead>
+                            <tr>
+                                <th data-ar="الصورة" data-en="Image">الصورة</th>
+                                <th data-ar="اسم المنتج" data-en="Product Name">اسم المنتج</th>
+                                <th data-ar="السعر" data-en="Price">السعر</th>
+                                <th data-ar="المخزون" data-en="Stock">المخزون</th>
+                                <th data-ar="التصنيف" data-en="Category">التصنيف</th>
+                                <th data-ar="الإجراءات" data-en="Actions">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="ordersSection" style="display: none;">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2><i class="fas fa-shopping-cart"></i> <span data-ar="إدارة الطلبات"
+                                data-en="Orders Management">إدارة الطلبات</span></h2>
+                        <button class="btn-add" onclick="openOrderModal()" id="addOrderBtn">
+                            <i class="fas fa-plus"></i>
+                            <span data-ar="طلب جديد" data-en="New Order">طلب جديد</span>
+                        </button>
+                    </div>
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th data-ar="رقم الفاتورة" data-en="Invoice">رقم الفاتورة</th>
+                                <th data-ar="العميل" data-en="Customer">العميل</th>
+                                <th data-ar="المبلغ" data-en="Amount">المبلغ</th>
+                                <th data-ar="طريقة الدفع" data-en="Payment">طريقة الدفع</th>
+                                <th data-ar="الحالة" data-en="Status">الحالة</th>
+                                <th data-ar="التاريخ" data-en="Date">التاريخ</th>
+                                <th data-ar="الإجراءات" data-en="Actions">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Activities Section -->
+            <div id="activitiesSection" style="display: none;">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2><i class="fas fa-history"></i> <span data-ar="سجل النشاطات" data-en="Activities Log">سجل
+                                النشاطات</span></h2>
+                    </div>
+                    <table id="activitiesTable">
+                        <thead>
+                            <tr>
+                                <th data-ar="المستخدم" data-en="User">المستخدم</th>
+                                <th data-ar="الإجراء" data-en="Action">الإجراء</th>
+                                <th data-ar="الهدف" data-en="Target">الهدف</th>
+                                <th data-ar="التفاصيل" data-en="Details">التفاصيل</th>
+                                <th data-ar="التاريخ" data-en="Date">التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activitiesTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productModalTitle" data-ar="إضافة منتج جديد" data-en="Add New Product">إضافة منتج جديد</h2>
+                <button class="close-modal" onclick="closeProductModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+
+                    <div class="form-group">
+                        <label data-ar="اسم المنتج" data-en="Product Name">اسم المنتج</label>
+                        <input type="text" id="productName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-ar="الوصف" data-en="Description">الوصف</label>
+                        <textarea id="productDescription" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-ar="السعر" data-en="Price">السعر</label>
+                            <input type="number" id="productPrice" min="0" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-ar="المخزون" data-en="Stock">المخزون</label>
+                            <input type="number" id="productStock" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-ar="التصنيف" data-en="Category">التصنيف</label>
+                        <input type="text" id="productCategory" placeholder="مثال: إلكترونيات, ملابس, كتب" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-ar="صورة المنتج" data-en="Product Image">صورة المنتج</label>
+                        <input type="text" id="productImage" placeholder="URL الصورة">
+                    </div>
+
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save"></i>
+                        <span data-ar="حفظ المنتج" data-en="Save Product">حفظ المنتج</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-ar="إنشاء طلب جديد" data-en="Create New Order">إنشاء طلب جديد</h2>
+                <button class="close-modal" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label data-ar="اسم العميل" data-en="Customer Name">اسم العميل</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-ar="المنتجات" data-en="Products">المنتجات</label>
+                        <div id="orderProducts">
+                            <div class="product-row" style="margin-bottom: 10px; display: flex; gap: 10px;">
+                                <select class="product-select"
+                                    style="flex: 2; padding: 10px; border: 2px solid var(--border); border-radius: 8px;"
+                                    onchange="calculateTotal()">
+                                    <option value="">اختر منتج</option>
+                                </select>
+                                <input type="number" class="product-quantity" placeholder="الكمية" min="1" value="1"
+                                    style="flex: 1; padding: 10px; border: 2px solid var(--border); border-radius: 8px;"
+                                    onchange="calculateTotal()">
+                                <button type="button" onclick="this.parentElement.remove(); calculateTotal();"
+                                    style="padding: 10px; background: var(--danger); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addProductRow()"
+                            style="margin-top: 10px; padding: 10px 20px; background: var(--success); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            <i class="fas fa-plus"></i> <span data-ar="إضافة منتج آخر"
+                                data-en="Add Another Product">إضافة منتج آخر</span>
+                        </button>
+                    </div>
+
+                    <div class="invoice-details">
+                        <div class="invoice-row">
+                            <span data-ar="المجموع الفرعي:" data-en="Subtotal:">المجموع الفرعي:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="invoice-row">
+                            <span data-ar="الضريبة (15%):" data-en="Tax (15%):">الضريبة (15%):</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <div class="invoice-row total">
+                            <span data-ar="الإجمالي:" data-en="Total:">الإجمالي:</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label data-ar="طريقة الدفع" data-en="Payment Method">طريقة الدفع</label>
+                        <div class="payment-methods">
+                            <div class="payment-method" onclick="selectPaymentMethod('cash')">
+                                <i class="fas fa-money-bill"></i>
+                                <h4 data-ar="نقدي" data-en="Cash">نقدي</h4>
+                            </div>
+                            <div class="payment-method" onclick="selectPaymentMethod('card')">
+                                <i class="fas fa-credit-card"></i>
+                                <h4 data-ar="بطاقة" data-en="Card">بطاقة</h4>
+                            </div>
+                            <div class="payment-method" onclick="selectPaymentMethod('bank-transfer')">
+                                <i class="fas fa-university"></i>
+                                <h4 data-ar="تحويل بنكي" data-en="Bank Transfer">تحويل بنكي</h4>
+                            </div>
+                        </div>
+                        <input type="hidden" id="paymentMethod" required>
+                    </div>
+
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-credit-card"></i>
+                        <span data-ar="إتمام الدفع وإنشاء الفاتورة" data-en="Complete Payment & Create Invoice">إتمام
+                            الدفع وإنشاء الفاتورة</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--danger), #d64161);">
+                <h2 data-ar="تأكيد الحذف" data-en="Confirm Delete">تأكيد الحذف</h2>
+                <button class="close-modal" onclick="closeDeleteModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 25px; font-size: 16px;"
+                    data-ar="هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء."
+                    data-en="Are you sure you want to delete this item? This action cannot be undone.">
+                    هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.
+                </p>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="confirmDelete()"
+                        style="flex: 1; padding: 12px; background: var(--danger); color: white; border: none; border-radius: 8px; font-family: inherit; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-trash"></i> <span data-ar="حذف" data-en="Delete">حذف</span>
+                    </button>
+                    <button onclick="closeDeleteModal()"
+                        style="flex: 1; padding: 12px; background: var(--gray); color: white; border: none; border-radius: 8px; font-family: inherit; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-times"></i> <span data-ar="إلغاء" data-en="Cancel">إلغاء</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--success), #05b085);">
+                <h2 data-ar="فاتورة الشراء" data-en="Invoice">فاتورة الشراء</h2>
+                <button class="close-modal" onclick="closeInvoiceModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="invoiceContent" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-check-circle"
+                        style="font-size: 80px; color: var(--success); margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 15px;" data-ar="تم إنشاء الفاتورة بنجاح!"
+                        data-en="Invoice created successfully!">تم إنشاء الفاتورة بنجاح!</h3>
+                    <p id="invoiceNumber"
+                        style="font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 10px;"></p>
+                    <p id="invoiceTotal"
+                        style="font-size: 24px; color: var(--success); font-weight: 800; margin-bottom: 20px;"></p>
+                </div>
+                <button onclick="printInvoice()" class="btn-save"
+                    style="background: linear-gradient(135deg, var(--info), #3aa8d1);">
+                    <i class="fas fa-print"></i> <span data-ar="طباعة الفاتورة" data-en="Print Invoice">طباعة
+                        الفاتورة</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- علامة عدم الاتصال -->
+    <div id="offlineBadge" class="offline-badge">
+        <i class="fas fa-wifi-slash"></i>
+        <span data-ar="أنت غير متصل بالإنترنت" data-en="You are offline">أنت غير متصل بالإنترنت</span>
+    </div>
+
+    <!-- رسالة تثبيت التطبيق -->
+    <div id="installPrompt" class="install-prompt">
+        <i class="fas fa-download"></i>
+        <span data-ar="تثبيت التطبيق على الجهاز" data-en="Install app on device">تثبيت التطبيق على الجهاز</span>
+        <button onclick="installApp()"
+            style="padding: 8px 15px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
+            <span data-ar="تثبيت" data-en="Install">تثبيت</span>
+        </button>
+        <button onclick="closeInstallPrompt()"
+            style="padding: 8px; background: none; border: none; color: var(--gray); cursor: pointer;">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- إشعارات -->
+    <div id="notification"></div>
+
+    <script src="script.js">
+    </script>
+</body>
+
+</html>
